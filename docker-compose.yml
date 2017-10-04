@@ -1,5 +1,6 @@
 web:
     image: nginx
+    container_name: docker_web
     ports:
         - "80:80"
     volumes:
@@ -10,10 +11,13 @@ web:
         - ./logs/nginx-access.log:/var/log/nginx/access.log
     links:
         - php
+
 php:
-    image: php:7-fpm
+    build: php
+    container_name: docker_php
     volumes:
         - ./public:/usr/share/www
+        - ./php/php.ini:/usr/local/etc/php/php.ini
 
 mysql:
     image: mariadb
