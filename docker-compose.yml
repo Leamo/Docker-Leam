@@ -17,12 +17,13 @@ php:
     container_name: docker_php
     volumes:
         - ./public:/usr/share/www
-        - ./php/php.ini:/usr/local/etc/php/php.ini
+        - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
 
 mysql:
     image: mariadb
     environment:
         MYSQL_ROOT_PASSWORD: admin
+
 phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
