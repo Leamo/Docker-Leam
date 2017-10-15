@@ -3,3 +3,4 @@ public/*
 nginx/*
 !/nginx/default.conf
 logs/*
+mysql/data/*

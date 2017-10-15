@@ -18,14 +18,20 @@ php:
     volumes:
         - ./public:/usr/share/www
         - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    links:
+        - mysql
 
 mysql:
     image: mariadb
+    container_name: docker_mysql
     environment:
         MYSQL_ROOT_PASSWORD: admin
+    volumes:
+        - ./mysql/data/:/var/lib/mysql
 
 phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: docker_myadmin
     restart: always
     links:
         - mysql
