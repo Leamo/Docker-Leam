@@ -1,43 +1,45 @@
-web:
-    image: nginx
-    container_name: docker_web
-    ports:
-        - "80:80"
-    volumes:
-        - ./public:/usr/share/www
-        - ./nginx/:/etc/nginx/conf.d/
+version: '2'
+services:
+    web:
+        image: nginx
+        container_name: docker_web
+        ports:
+            - "80:80"
+        volumes:
+            - ./public:/usr/share/www
+            - ./nginx/:/etc/nginx/conf.d/
 
-        - ./logs/nginx-error.log:/var/log/nginx/error.log
-        - ./logs/nginx-access.log:/var/log/nginx/access.log
-    links:
-        - php
+            - ./logs/nginx-error.log:/var/log/nginx/error.log
+            - ./logs/nginx-access.log:/var/log/nginx/access.log
+        depends_on:
+            - php
 
-php:
-    build: php
-    container_name: docker_php
-    volumes:
-        - ./public:/usr/share/www
-        - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
-    links:
-        - mysql
+    php:
+        build: php
+        container_name: docker_php
+        volumes:
+            - ./public:/usr/share/www
+            - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+        links:
+            - mysql
 
-mysql:
-    image: mariadb
-    container_name: docker_mysql
-    environment:
-        MYSQL_ROOT_PASSWORD: admin
-    volumes:
-        - ./mysql/data/:/var/lib/mysql
+    mysql:
+        image: mysql
+        container_name: docker_mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+        volumes:
+            - ./mysql/data/:/var/lib/mysql
 
-phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: docker_myadmin
-    restart: always
-    links:
-        - mysql
-    ports:
-        - 8183:80
-    environment:
-        MYSQL_USERNAME: admin
-        MYSQL_ROOT_PASSWORD: admin
-        PMA_ARBITRARY: 1
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: docker_myadmin
+        restart: always
+        links:
+            - mysql
+        ports:
+            - 8183:80
+        environment:
+            MYSQL_USERNAME: admin
+            MYSQL_ROOT_PASSWORD: admin
+            PMA_ARBITRARY: 1
